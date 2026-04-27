@@ -1,115 +1,1226 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="PkLa_ViOo6FAHpvh8SacceMb95o9tePRdrqLNBz9X1M" />
+<meta name="robots" content="index, follow">
 
-    <!-- 🔐 Google Site Verification -->
-    <meta name="google-site-verification" content="PkLa_ViOo6FAHpvh8SacceMb95o9tePRdrqLNBz9X1M" />
+<title>Amazon Glacier Pricing Calculator – AWS Glacier Cost &amp; Storage Tier Estimator</title>
 
-    <!-- SEO Potenciado -->
-    <title>AWS Glacier Tools – Cost Calculator & Archive Retrieval Estimator</title>
+<meta name="description" content="Free Amazon Glacier pricing calculator. Estimate monthly costs for S3 Glacier Instant, Flexible Retrieval, and Deep Archive. Includes storage, retrieval, early deletion, and data transfer costs. No login required.">
 
-    <meta name="description" content="Optimize AWS Glacier storage with tools to estimate costs, analyze archive retrieval times, and choose the best storage tier. Reduce long-term storage expenses.">
+<meta name="keywords" content="amazon glacier pricing calculator, aws glacier cost calculator, glacier pricing estimator, s3 glacier deep archive cost, glacier flexible retrieval cost, glacier instant retrieval pricing, aws cold storage cost calculator, glacier vs s3 cost, glacier retrieval cost, aws archive storage calculator">
 
-    <meta name="keywords" content="
-    aws glacier cost calculator,
-    glacier pricing estimator,
-    archive retrieval time estimator aws,
-    glacier storage tier selector,
-    aws cold storage cost calculator,
-    glacier vs s3 cost comparison,
-    aws archive storage calculator,
-    glacier retrieval cost estimator,
-    aws long term storage pricing,
-    glacier deep archive cost calculator,
-    aws backup storage cost tool,
-    optimize glacier storage costs,
-    archive retrieval speed calculator
-    ">
+<link rel="canonical" href="https://franrivalbigprojects.github.io/aws-glacier-tools/">
 
-    <meta name="author" content="AI Tools Suite">
+<meta property="og:title" content="Amazon Glacier Pricing Calculator – AWS Glacier Cost Estimator">
+<meta property="og:description" content="Calculate Amazon Glacier storage and retrieval costs for all tiers. Free, no login.">
+<meta property="og:type" content="website">
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="AWS Glacier Tools – Storage Cost & Retrieval Optimization">
-    <meta property="og:description" content="Estimate Glacier costs, retrieval times, and storage tiers.">
-    <meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Estilos -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background: #0f172a;
-            color: #e2e8f0;
-        }
-        h1 {
-            color: #38bdf8;
-        }
-        p {
-            max-width: 750px;
-            line-height: 1.6;
-        }
-        .tools {
-            margin-top: 30px;
-        }
-        .tool {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #1e293b;
-            border-radius: 10px;
-            transition: 0.2s;
-        }
-        .tool:hover {
-            background: #334155;
-        }
-        a {
-            text-decoration: none;
-            color: #22c55e;
-            font-weight: bold;
-            font-size: 18px;
-        }
-        small {
-            display: block;
-            margin-top: 5px;
-            color: #94a3b8;
-        }
-    </style>
+<style>
+:root {
+  --bg: #04080e;
+  --surface: #060c16;
+  --surface2: #091020;
+  --border: #0e1a2c;
+  --border2: #152540;
+  --ice: #67e8f9;
+  --ice-dim: rgba(103,232,249,0.1);
+  --ice-dim2: rgba(103,232,249,0.05);
+  --blue: #3b82f6;
+  --blue-dim: rgba(59,130,246,0.08);
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.1);
+  --green-dim2: rgba(34,197,94,0.05);
+  --orange: #f97316;
+  --orange-dim: rgba(249,115,22,0.08);
+  --yellow: #fbbf24;
+  --yellow-dim: rgba(251,191,36,0.08);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.08);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.08);
+  --text: #b0cce0;
+  --text-muted: #3a5270;
+  --text-dim: #0e1e30;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Inter', sans-serif;
+  --r: 8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 44px 44px;
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 0;
+}
+
+header {
+  border-bottom: 1px solid var(--border2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(4,8,14,0.96);
+  backdrop-filter: blur(12px);
+}
+
+.header-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.logo-pill {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ice);
+  background: var(--ice-dim2);
+  border: 1px solid rgba(103,232,249,0.25);
+  border-radius: 3px;
+  padding: 3px 9px;
+}
+
+.logo-text {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.logo-text strong { color: var(--ice); font-weight: 500; }
+
+.wrapper {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* HERO */
+.hero {
+  padding: 48px 0 34px;
+  border-bottom: 1px solid var(--border2);
+  margin-bottom: 28px;
+}
+
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ice);
+  margin-bottom: 14px;
+  opacity: 0.8;
+}
+
+h1 {
+  font-size: clamp(21px, 3.2vw, 29px);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+h1 em { font-style: normal; color: var(--ice); }
+
+.hero-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 600px;
+  line-height: 1.75;
+  margin-bottom: 18px;
+}
+
+.hero-sub strong { color: var(--text); }
+
+.pill-row { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.pill {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: 3px;
+  border: 1px solid;
+}
+
+.pill-ice { color: var(--ice); background: var(--ice-dim2); border-color: rgba(103,232,249,0.25); }
+.pill-dim { color: var(--text-muted); border-color: var(--border2); }
+
+/* TIER SELECTOR */
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.tier-btn {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 12px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tier-btn:hover { border-color: rgba(103,232,249,0.25); }
+
+.tier-btn.active {
+  border-color: var(--ice);
+  background: var(--ice-dim2);
+  box-shadow: 0 0 14px rgba(103,232,249,0.08);
+}
+
+.tb-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 3px;
+  line-height: 1.3;
+}
+
+.tier-btn.active .tb-name { color: var(--ice); }
+
+.tb-price {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.tb-retrieval {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  display: block;
+}
+
+/* TOOL */
+.tool-shell {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+.tool-topbar {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border2);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.topbar-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.btn-sm {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid;
+  transition: opacity 0.15s;
+}
+
+.btn-sm:hover { opacity: 0.75; }
+.btn-ice   { background: var(--ice-dim2); color: var(--ice); border-color: rgba(103,232,249,0.25); }
+.btn-ghost { background: transparent; color: var(--text-muted); border-color: var(--border2); }
+.btn-green { background: var(--green-dim2); color: var(--green); border-color: rgba(34,197,94,0.25); }
+
+/* FORM */
+.form-body {
+  padding: 20px;
+  border-bottom: 1px solid var(--border2);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.field { display: flex; flex-direction: column; gap: 5px; }
+
+.field-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.field-hint {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  margin-top: -2px;
+}
+
+.glc-input, .glc-select {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 9px 11px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text);
+  width: 100%;
+  -webkit-appearance: none;
+  transition: border-color 0.2s;
+}
+
+.glc-input:focus, .glc-select:focus {
+  outline: none;
+  border-color: rgba(103,232,249,0.3);
+}
+
+.glc-select option { background: #091020; }
+
+/* Retrieval tier */
+.retrieval-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.ret-btn {
+  flex: 1;
+  padding: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  border-radius: 4px;
+  border: 1px solid var(--border2);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+  color: var(--text-muted);
+  background: transparent;
+}
+
+.ret-btn:hover { border-color: var(--ice); color: var(--ice); }
+
+.ret-btn.active {
+  border-color: var(--ice);
+  color: var(--ice);
+  background: var(--ice-dim2);
+}
+
+.ret-sub { font-size: 9px; color: var(--text-dim); display: block; margin-top: 2px; }
+
+.calc-bar {
+  padding: 14px 20px;
+  background: var(--surface2);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn-calc {
+  padding: 10px 28px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--ice);
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: opacity 0.15s, box-shadow 0.15s;
+  box-shadow: 0 0 18px rgba(103,232,249,0.18);
+}
+
+.btn-calc:hover { opacity: 0.87; box-shadow: 0 0 26px rgba(103,232,249,0.32); }
+
+/* RESULTS */
+#resultsWrap { display: none; }
+
+.results-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.res-card {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.res-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+
+.rc-ice::before    { background: var(--ice); }
+.rc-blue::before   { background: var(--blue); }
+.rc-green::before  { background: var(--green); }
+.rc-orange::before { background: var(--orange); }
+
+.rc-label { font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); margin-bottom: 8px; }
+.rc-val   { font-family: var(--mono); font-size: 22px; font-weight: 600; line-height: 1; margin-bottom: 3px; }
+.rc-sub   { font-family: var(--mono); font-size: 10px; color: var(--text-muted); }
+
+.breakdown {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.bt-head {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border2);
+  padding: 8px 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.bt-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 16px;
+  border-bottom: 1px solid var(--border2);
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.bt-row:last-child { border-bottom: none; }
+.bt-row:hover { background: rgba(103,232,249,0.02); }
+.bt-key { color: var(--text-muted); }
+.bt-val { color: var(--text); }
+.bt-total { color: var(--ice); font-size: 14px; font-weight: 600; }
+
+/* Tier comparison */
+.tier-cmp {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.tc-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 1fr 1fr 1fr;
+  border-bottom: 1px solid var(--border2);
+}
+
+.tc-row:last-child { border-bottom: none; }
+.tc-row.tc-head { background: var(--surface2); }
+.tc-row.tc-active { background: var(--ice-dim2); }
+
+.tc-cell {
+  padding: 9px 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  border-right: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+}
+
+.tc-cell:last-child { border-right: none; }
+.tc-head .tc-cell { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+.tc-row.tc-active .tc-cell { color: var(--ice); }
+
+/* Rec card */
+.rec-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--green);
+  border-radius: var(--r);
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.rec-card strong { color: var(--green); }
+
+/* DIVIDER */
+hr.divider { border: none; border-top: 1px solid var(--border2); margin: 50px 0; }
+
+.content-section { margin-bottom: 50px; }
+
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.sec-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ice);
+  white-space: nowrap;
+  opacity: 0.7;
+}
+
+.sec-rule { flex: 1; height: 1px; background: var(--border2); }
+
+p { font-size: 14px; color: var(--text-muted); line-height: 1.8; margin-bottom: 10px; }
+p strong { color: var(--text); }
+
+code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--surface2);
+  color: var(--ice);
+  padding: 2px 7px;
+  border-radius: 3px;
+  border: 1px solid var(--border2);
+}
+
+.dense-block {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 22px;
+  margin-top: 14px;
+}
+
+.dense-block p { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border2); }
+.dense-block p:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+.faq-list {
+  margin-top: 14px;
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+
+.faq-item { border-bottom: 1px solid var(--border2); }
+.faq-item:last-child { border-bottom: none; }
+
+.faq-q {
+  width: 100%;
+  text-align: left;
+  background: var(--surface);
+  border: none;
+  padding: 13px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  font-family: var(--sans);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.15s;
+}
+
+.faq-q:hover { background: var(--ice-dim2); }
+.faq-arrow { font-family: var(--mono); font-size: 11px; color: var(--text-dim); transition: transform 0.2s; flex-shrink: 0; }
+.faq-item.open .faq-arrow { transform: rotate(180deg); }
+
+.faq-a {
+  display: none;
+  padding: 0 18px 13px;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.75;
+  border-top: 1px solid var(--border2);
+  background: var(--bg);
+}
+
+.faq-item.open .faq-a { display: block; }
+.faq-a code { font-family: var(--mono); font-size: 11px; color: var(--ice); background: var(--ice-dim2); border-radius: 3px; padding: 1px 5px; }
+
+.other-tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.otl {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  text-decoration: none;
+  display: block;
+  transition: border-color 0.15s;
+}
+
+.otl:hover { border-color: rgba(103,232,249,0.3); }
+.otl-eye  { font-family: var(--mono); font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
+.otl-name { font-family: var(--mono); font-size: 12px; color: var(--ice); font-weight: 500; }
+
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 50px; }
+
+.tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 100px;
+  padding: 4px 12px;
+  cursor: default;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tag:hover { color: var(--ice); border-color: rgba(103,232,249,0.3); }
+
+footer { border-top: 1px solid var(--border2); padding: 20px 0; position: relative; z-index: 1; }
+
+.footer-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+footer p { font-family: var(--mono); font-size: 11px; color: var(--text-dim); margin: 0; }
+
+@media (max-width: 680px) {
+  .tier-grid { grid-template-columns: 1fr 1fr; }
+  .form-grid { grid-template-columns: 1fr 1fr; }
+  .results-cards { grid-template-columns: 1fr 1fr; }
+  .tc-row { grid-template-columns: 120px repeat(4, 1fr); font-size: 10px; }
+  .retrieval-row { flex-wrap: wrap; }
+}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Amazon Glacier Pricing Calculator",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free Amazon Glacier pricing calculator. Estimate monthly costs for S3 Glacier Instant Retrieval, S3 Glacier Flexible Retrieval, and S3 Glacier Deep Archive. Includes storage, retrieval, early deletion penalty, and data transfer costs by region.",
+  "featureList": "Glacier Instant Retrieval cost, Glacier Flexible Retrieval cost, Glacier Deep Archive cost, S3 Standard comparison, early deletion penalty, retrieval tier pricing, region pricing, tier recommendation"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much does Amazon Glacier cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Amazon Glacier storage costs (US East): S3 Glacier Instant Retrieval ~$0.004/GB/month. S3 Glacier Flexible Retrieval ~$0.0036/GB/month. S3 Glacier Deep Archive ~$0.00099/GB/month. Retrieval costs are additional and vary by retrieval tier (Expedited, Standard, Bulk). Early deletion fees apply if objects are deleted before the minimum storage duration (90 days for Glacier Flexible, 180 days for Deep Archive)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between S3 Glacier and S3 Glacier Deep Archive?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "S3 Glacier Flexible Retrieval costs ~$0.0036/GB/month with retrieval times of 1-5 minutes (Expedited) to 12 hours (Standard). S3 Glacier Deep Archive costs ~$0.00099/GB/month — about 75% cheaper — but retrieval takes 12 hours minimum (Standard) or up to 48 hours (Bulk). Deep Archive is for data accessed once or twice per year at most. Glacier Flexible is better for data you may occasionally need within hours."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the early deletion fee for Amazon Glacier?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "S3 Glacier Flexible Retrieval has a 90-day minimum storage commitment. If you delete an object before 90 days, you are charged for the remaining days. S3 Glacier Deep Archive has a 180-day minimum. For example, deleting a 1GB Glacier Flexible object after 30 days incurs a fee for the remaining 60 days of storage at the Glacier Flexible rate."
+      }
+    }
+  ]
+}
+</script>
+
 </head>
+
 <body>
 
-    <h1>AWS Glacier Tools</h1>
+<header>
+  <div class="header-inner">
+    <span class="logo-pill">&#10052;</span>
+    <span class="logo-text"><strong>amazon-glacier</strong>-pricing-calculator</span>
+  </div>
+</header>
 
-    <p>
-        Optimize your AWS Glacier and cold storage strategy with advanced tools designed for
-        long-term data archiving. Estimate storage costs, analyze retrieval times, and select
-        the best storage tier for your use case.
+<div class="wrapper">
+
+  <section class="hero">
+    <p class="hero-eyebrow">// Free AWS Storage Tool</p>
+    <h1><em>Amazon Glacier</em> Pricing Calculator<br>Cold Storage Cost Estimator</h1>
+    <p class="hero-sub">
+      Estimate monthly costs for <strong>S3 Glacier Instant, Flexible Retrieval, and Deep Archive</strong>. Includes storage, retrieval tiers, early deletion penalties, and tier recommendations.
     </p>
-
-    <p>
-        These tools help you reduce storage costs, plan archive retrieval strategies, and improve
-        backup efficiency across your AWS infrastructure. Ideal for backups, compliance storage,
-        and large-scale archival systems.
-    </p>
-
-    <div class="tools">
-
-        <div class="tool">
-            <a href="archive_retrieval_time_estimator/">Archive Retrieval Time Estimator</a>
-            <small>Estimate retrieval times for AWS Glacier archives based on storage class.</small>
-        </div>
-
-        <div class="tool">
-            <a href="glacier_cost_calculator/">Glacier Cost Calculator</a>
-            <small>Calculate AWS Glacier storage and retrieval costs.</small>
-        </div>
-
-        <div class="tool">
-            <a href="storage_tier_selector/">Storage Tier Selector</a>
-            <small>Choose the optimal Glacier storage tier for cost and performance.</small>
-        </div>
-
+    <div class="pill-row">
+      <span class="pill pill-ice">Instant · Flexible · Deep Archive</span>
+      <span class="pill pill-dim">Early Deletion</span>
+      <span class="pill pill-dim">Retrieval Tiers</span>
+      <span class="pill pill-dim">Free · No login</span>
     </div>
+  </section>
+
+  <!-- TIER SELECTOR CARDS -->
+
+  <div class="tier-grid" id="tierGrid"></div>
+
+  <!-- CALCULATOR -->
+
+  <div class="tool-shell">
+    <div class="tool-topbar">
+      <span class="topbar-label">// Glacier Cost Calculator</span>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-sm btn-green" onclick="loadSample()">Load Sample</button>
+        <button class="btn-sm btn-ghost" onclick="resetCalc()">Reset</button>
+      </div>
+    </div>
+
+
+<div class="form-body">
+  <div class="form-grid">
+    <div class="field">
+      <label class="field-label">Storage Size (GB)</label>
+      <p class="field-hint">Total data stored</p>
+      <input class="glc-input" type="number" id="storageGB" placeholder="1000" min="0">
+    </div>
+    <div class="field">
+      <label class="field-label">Retrieval Size (GB)</label>
+      <p class="field-hint">Data retrieved per month</p>
+      <input class="glc-input" type="number" id="retrievalGB" placeholder="50" min="0">
+    </div>
+    <div class="field">
+      <label class="field-label">Early Deletion (GB)</label>
+      <p class="field-hint">Deleted before min. period</p>
+      <input class="glc-input" type="number" id="earlyDelGB" placeholder="0" min="0">
+    </div>
+    <div class="field">
+      <label class="field-label">Days Stored (for early del.)</label>
+      <p class="field-hint">Days before early deletion</p>
+      <input class="glc-input" type="number" id="daysStored" placeholder="30" min="0">
+    </div>
+    <div class="field">
+      <label class="field-label">Data Transfer Out (GB)</label>
+      <p class="field-hint">Transfer out to internet</p>
+      <input class="glc-input" type="number" id="transferGB" placeholder="0" min="0">
+    </div>
+    <div class="field">
+      <label class="field-label">Region</label>
+      <p class="field-hint">AWS pricing region</p>
+      <select class="glc-select" id="regionSelect">
+        <option value="use1">US East (N. Virginia)</option>
+        <option value="usw2">US West (Oregon)</option>
+        <option value="euw1">EU West (Ireland)</option>
+        <option value="apse1">AP Southeast (Singapore)</option>
+        <option value="apne1">AP Northeast (Tokyo)</option>
+      </select>
+    </div>
+  </div>
+
+  <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Retrieval Tier</div>
+  <div class="retrieval-row" id="retrievalRow"></div>
+</div>
+
+<div class="calc-bar">
+  <button class="btn-calc" onclick="calcGlacier()">Calculate Glacier Cost</button>
+</div>
+
+
+  </div>
+
+  <!-- RESULTS -->
+
+  <div id="resultsWrap">
+    <div class="results-cards" id="resultsCards"></div>
+    <div class="breakdown" id="breakdownTable"></div>
+    <div class="tier-cmp" id="tierCmpTable"></div>
+    <div class="rec-card" id="recCard" style="display:none;"></div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- TIER GUIDE -->
+
+  <section class="content-section">
+    <div class="sec-head">
+      <span class="sec-label">Glacier Tier Guide</span>
+      <span class="sec-rule"></span>
+    </div>
+
+
+<div class="dense-block">
+  <p><strong>S3 Glacier Instant Retrieval</strong> — ~$0.004/GB/month<br>
+  For data accessed once per quarter with millisecond retrieval. Same retrieval performance as S3 Standard but 68% cheaper for storage. Minimum storage duration: 90 days. No retrieval charge for Standard retrievals up to 10% of stored data. Best for: medical images, media assets, backups accessed occasionally but urgently when needed.</p>
+
+  <p><strong>S3 Glacier Flexible Retrieval</strong> — ~$0.0036/GB/month<br>
+  For archival data accessed 1-2 times per year. Retrieval options: Expedited (1-5 min, $0.03/GB), Standard (3-5 hours, $0.01/GB), Bulk (5-12 hours, free). Minimum storage duration: 90 days. Early deletion fee applies if objects are removed before 90 days. Best for: disaster recovery, compliance archives, project backups.</p>
+
+  <p><strong>S3 Glacier Deep Archive</strong> — ~$0.00099/GB/month<br>
+  The lowest-cost AWS storage option — 75% cheaper than Glacier Flexible. Retrieval takes 12 hours (Standard) or up to 48 hours (Bulk). Minimum storage duration: 180 days. Early deletion fee is significant for frequently changed data. Best for: long-term regulatory compliance, data that must be retained but rarely accessed, replacing tape-based archival systems.</p>
+
+  <p><strong>Early deletion penalty explained</strong><br>
+  If you store 100GB in Glacier Flexible for 30 days and delete it, you are billed for 60 remaining days at the Glacier Flexible rate: <code>100 GB × 60 days × ($0.0036 / 30 days) = $0.72</code>. For Deep Archive the minimum is 180 days — deleting after 60 days means a 120-day penalty. The calculator above computes this automatically.</p>
+</div>
+
+
+  </section>
+
+  <!-- FAQ -->
+
+  <section class="content-section">
+    <div class="sec-head">
+      <span class="sec-label">FAQ — Amazon Glacier Pricing</span>
+      <span class="sec-rule"></span>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How much does Amazon Glacier cost per GB?<span class="faq-arrow">&#9660;</span></button>
+        <div class="faq-a">Amazon Glacier storage prices (US East, per GB/month): Glacier Instant Retrieval ~$0.004. Glacier Flexible Retrieval ~$0.0036. Glacier Deep Archive ~$0.00099. For comparison, S3 Standard is ~$0.023/GB/month — Glacier Deep Archive is about 23x cheaper for storage. Retrieval costs are separate and depend on tier and retrieval speed.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What is the Amazon Glacier retrieval cost?<span class="faq-arrow">&#9660;</span></button>
+        <div class="faq-a">Glacier Flexible Retrieval: Expedited $0.03/GB (1-5 min), Standard $0.01/GB (3-5 hrs), Bulk free (5-12 hrs). Glacier Instant Retrieval: $0.03/GB (milliseconds). Glacier Deep Archive: Standard $0.02/GB (12 hrs), Bulk $0.0025/GB (48 hrs). First 10GB of retrieval per month is free. For large-scale retrieval, Bulk tier is free for Flexible and very cheap for Deep Archive.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What is the Amazon Glacier early deletion fee?<span class="faq-arrow">&#9660;</span></button>
+        <div class="faq-a">Glacier Flexible Retrieval has a 90-day minimum. Glacier Deep Archive has a 180-day minimum. Early deletion is charged for remaining days: delete a 1GB Flexible object after 60 days = 30 days of penalty at $0.0036/30 = $0.0036 × (30/30) = $0.0036. For Deep Archive, deleting 100GB after 30 days = 150 days penalty = 100 × (150/30) × $0.00099 = $0.495. The calculator above shows this automatically.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">S3 Glacier vs Glacier Deep Archive — which to choose?<span class="faq-arrow">&#9660;</span></button>
+        <div class="faq-a">Choose Glacier Flexible if you may need data within hours on short notice — retrieval takes 3-5 hours with Standard tier. Choose Deep Archive if data is accessed once a year or less and you can wait 12+ hours — it's 75% cheaper. If you need immediate access (seconds), use Glacier Instant Retrieval. If cost is the only factor and data is compliance-only, Deep Archive is the right choice.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is Amazon Glacier the same as S3 Glacier?<span class="faq-arrow">&#9660;</span></button>
+        <div class="faq-a">Yes. Amazon Glacier was rebranded as Amazon S3 Glacier in 2021. The standalone Glacier service still exists but is accessed through S3 storage classes: S3 Glacier Instant Retrieval, S3 Glacier Flexible Retrieval (formerly Glacier), and S3 Glacier Deep Archive. The underlying technology is the same — the change was to unify the storage product line under S3.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="sec-head">
+      <span class="sec-label">More Tools</span>
+      <span class="sec-rule"></span>
+    </div>
+    <div class="other-tools">
+      <a href="archive_retrieval_time_estimator/" class="otl">
+        <p class="otl-eye">retrieval //</p>
+        <span class="otl-name">Retrieval Time Estimator</span>
+      </a>
+      <a href="glacier_cost_calculator/" class="otl">
+        <p class="otl-eye">cost //</p>
+        <span class="otl-name">Glacier Cost Calculator</span>
+      </a>
+      <a href="storage_tier_selector/" class="otl">
+        <p class="otl-eye">tier //</p>
+        <span class="otl-name">Storage Tier Selector</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="tag-cloud">
+    <span class="tag">amazon glacier pricing calculator</span>
+    <span class="tag">aws glacier cost calculator</span>
+    <span class="tag">glacier deep archive cost</span>
+    <span class="tag">s3 glacier pricing estimator</span>
+    <span class="tag">glacier flexible retrieval cost</span>
+    <span class="tag">glacier instant retrieval pricing</span>
+    <span class="tag">glacier early deletion fee</span>
+    <span class="tag">aws cold storage cost</span>
+    <span class="tag">glacier vs s3 cost comparison</span>
+    <span class="tag">aws archive storage calculator</span>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>amazon-glacier-pricing-calculator &middot; free &middot; no login &middot; github pages</p>
+    <p>instant &middot; flexible &middot; deep archive &middot; retrieval &middot; early deletion</p>
+  </div>
+</footer>
+
+<script>
+// ─── PRICING DATA (approx 2025) ───
+var TIERS = [
+  {
+    id: 'instant',
+    name: 'Glacier Instant',
+    shortName: 'Instant',
+    minDays: 90,
+    prices: {
+      use1:  { storage: 0.004,    retrieval_std: 0.03,  retrieval_bulk: 0.0,    transfer: 0.09 },
+      usw2:  { storage: 0.004,    retrieval_std: 0.03,  retrieval_bulk: 0.0,    transfer: 0.09 },
+      euw1:  { storage: 0.0044,   retrieval_std: 0.033, retrieval_bulk: 0.0,    transfer: 0.09 },
+      apse1: { storage: 0.005,    retrieval_std: 0.036, retrieval_bulk: 0.0,    transfer: 0.09 },
+      apne1: { storage: 0.005,    retrieval_std: 0.036, retrieval_bulk: 0.0,    transfer: 0.114 }
+    },
+    retrievalOptions: ['Standard (ms)'],
+    description: 'Millisecond access. Best for occasional but urgent retrieval.'
+  },
+  {
+    id: 'flexible',
+    name: 'Glacier Flexible',
+    shortName: 'Flexible',
+    minDays: 90,
+    prices: {
+      use1:  { storage: 0.0036,   retrieval_std: 0.01,  retrieval_bulk: 0.0,    transfer: 0.09 },
+      usw2:  { storage: 0.0036,   retrieval_std: 0.01,  retrieval_bulk: 0.0,    transfer: 0.09 },
+      euw1:  { storage: 0.004,    retrieval_std: 0.011, retrieval_bulk: 0.0,    transfer: 0.09 },
+      apse1: { storage: 0.0045,   retrieval_std: 0.011, retrieval_bulk: 0.0,    transfer: 0.09 },
+      apne1: { storage: 0.005,    retrieval_std: 0.013, retrieval_bulk: 0.0,    transfer: 0.114 }
+    },
+    retrievalOptions: ['Expedited (1-5 min)', 'Standard (3-5 hr)', 'Bulk (5-12 hr, free)'],
+    description: 'Hours access. Best for compliance archives and DR backups.'
+  },
+  {
+    id: 'deep',
+    name: 'Deep Archive',
+    shortName: 'Deep',
+    minDays: 180,
+    prices: {
+      use1:  { storage: 0.00099,  retrieval_std: 0.02,  retrieval_bulk: 0.0025, transfer: 0.09 },
+      usw2:  { storage: 0.00099,  retrieval_std: 0.02,  retrieval_bulk: 0.0025, transfer: 0.09 },
+      euw1:  { storage: 0.001099, retrieval_std: 0.022, retrieval_bulk: 0.0028, transfer: 0.09 },
+      apse1: { storage: 0.001225, retrieval_std: 0.025, retrieval_bulk: 0.003,  transfer: 0.09 },
+      apne1: { storage: 0.001350, retrieval_std: 0.028, retrieval_bulk: 0.0033, transfer: 0.114 }
+    },
+    retrievalOptions: ['Standard (12 hr)', 'Bulk (48 hr)'],
+    description: 'Lowest cost. Best for long-term compliance, rarely accessed.'
+  }
+];
+
+var S3_STANDARD = {
+  use1: 0.023, usw2: 0.023, euw1: 0.024, apse1: 0.025, apne1: 0.025
+};
+
+var activeTier = 'flexible';
+var activeRetrieval = 0;
+
+// ─── INIT ───
+function init() {
+  buildTierCards();
+  buildRetrievalBtns();
+}
+
+function buildTierCards() {
+  var grid = document.getElementById('tierGrid');
+  TIERS.forEach(function(t) {
+    var btn = document.createElement('div');
+    btn.className = 'tier-btn' + (t.id === activeTier ? ' active' : '');
+    btn.id = 'tier-' + t.id;
+    btn.onclick = function() { selectTier(t.id); };
+
+    var name = document.createElement('span');
+    name.className = 'tb-name';
+    name.textContent = t.name;
+
+    var price = document.createElement('span');
+    price.className = 'tb-price';
+    price.style.color = t.id === 'instant' ? 'var(--blue)' : t.id === 'flexible' ? 'var(--ice)' : 'var(--green)';
+    price.textContent = '$' + t.prices.use1.storage + '/GB';
+
+    var ret = document.createElement('span');
+    ret.className = 'tb-retrieval';
+    ret.textContent = t.id === 'instant' ? 'ms retrieval' : t.id === 'flexible' ? '1min–12hr' : '12–48hr';
+
+    btn.appendChild(name);
+    btn.appendChild(price);
+    btn.appendChild(ret);
+    grid.appendChild(btn);
+  });
+
+  // Add S3 Standard for comparison
+  var s3btn = document.createElement('div');
+  s3btn.className = 'tier-btn';
+  s3btn.id = 'tier-s3std';
+  s3btn.onclick = function() { selectTier('s3std'); };
+  var s3name = document.createElement('span');
+  s3name.className = 'tb-name';
+  s3name.textContent = 'S3 Standard';
+  var s3price = document.createElement('span');
+  s3price.className = 'tb-price';
+  s3price.style.color = 'var(--orange)';
+  s3price.textContent = '$0.023/GB';
+  var s3ret = document.createElement('span');
+  s3ret.className = 'tb-retrieval';
+  s3ret.textContent = 'instant · no min.';
+  s3btn.appendChild(s3name);
+  s3btn.appendChild(s3price);
+  s3btn.appendChild(s3ret);
+  grid.appendChild(s3btn);
+}
+
+function selectTier(id) {
+  if (id === 's3std') {
+    // Just highlight for info, don't change active calc tier
+    document.querySelectorAll('.tier-btn').forEach(function(b) { b.classList.remove('active'); });
+    var btn = document.getElementById('tier-s3std');
+    if (btn) btn.classList.add('active');
+    return;
+  }
+  activeTier = id;
+  document.querySelectorAll('.tier-btn').forEach(function(b) { b.classList.remove('active'); });
+  var btn = document.getElementById('tier-' + id);
+  if (btn) btn.classList.add('active');
+  buildRetrievalBtns();
+}
+
+function buildRetrievalBtns() {
+  var row = document.getElementById('retrievalRow');
+  row.innerHTML = '';
+  activeRetrieval = 0;
+  var tier = TIERS.find(function(t) { return t.id === activeTier; });
+  if (!tier) return;
+  tier.retrievalOptions.forEach(function(opt, i) {
+    var btn = document.createElement('button');
+    btn.className = 'ret-btn' + (i === 0 ? ' active' : '');
+    btn.textContent = opt;
+    btn.onclick = (function(idx) { return function() {
+      activeRetrieval = idx;
+      document.querySelectorAll('.ret-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+    }; })(i);
+    row.appendChild(btn);
+  });
+}
+
+function fmt(n) { return '$' + n.toFixed(4) !== '$0.0000' ? '$' + n.toFixed(2) : '$' + n.toFixed(4); }
+function fmtP(n) { return '$' + n.toFixed(2); }
+
+function calcGlacier() {
+  var storageGB  = parseFloat(document.getElementById('storageGB').value) || 0;
+  var retrievalGB = parseFloat(document.getElementById('retrievalGB').value) || 0;
+  var earlyDelGB  = parseFloat(document.getElementById('earlyDelGB').value) || 0;
+  var daysStored  = parseFloat(document.getElementById('daysStored').value) || 0;
+  var transferGB  = parseFloat(document.getElementById('transferGB').value) || 0;
+  var region      = document.getElementById('regionSelect').value;
+
+  var tier = TIERS.find(function(t) { return t.id === activeTier; });
+  var p = tier.prices[region] || tier.prices.use1;
+
+  var storageCost = storageGB * p.storage;
+
+  // Retrieval cost
+  var retCost = 0;
+  var freeRetrievalGB = 10;
+  var billableRet = Math.max(0, retrievalGB - freeRetrievalGB);
+  if (tier.id === 'instant') {
+    retCost = billableRet * p.retrieval_std;
+  } else if (tier.id === 'flexible') {
+    if (activeRetrieval === 0) retCost = billableRet * 0.03; // expedited
+    else if (activeRetrieval === 1) retCost = billableRet * p.retrieval_std;
+    else retCost = 0; // bulk free
+  } else { // deep
+    if (activeRetrieval === 0) retCost = billableRet * p.retrieval_std;
+    else retCost = billableRet * p.retrieval_bulk;
+  }
+
+  // Early deletion
+  var earlyDelCost = 0;
+  if (earlyDelGB > 0 && daysStored < tier.minDays) {
+    var remainDays = tier.minDays - daysStored;
+    earlyDelCost = earlyDelGB * (remainDays / 30) * p.storage;
+  }
+
+  // Transfer
+  var freeTransfer = 100;
+  var billableTransfer = Math.max(0, transferGB - freeTransfer);
+  var transferCost = 0;
+  if (billableTransfer <= 10240) transferCost = billableTransfer * p.transfer;
+  else transferCost = billableTransfer * 0.07;
+
+  var total = storageCost + retCost + earlyDelCost + transferCost;
+  var annual = total * 12;
+  var s3Cost = storageGB * (S3_STANDARD[region] || 0.023);
+  var savings = s3Cost - storageCost;
+
+  // Result cards
+  var cards = document.getElementById('resultsCards');
+  cards.innerHTML = '';
+
+  function makeCard(cls, label, val, sub) {
+    var c = document.createElement('div');
+    c.className = 'res-card rc-' + cls;
+    var l = document.createElement('div'); l.className = 'rc-label'; l.textContent = label;
+    var v = document.createElement('div'); v.className = 'rc-val';
+    var colors = { ice: 'var(--ice)', blue: 'var(--blue)', green: 'var(--green)', orange: 'var(--orange)' };
+    v.style.color = colors[cls] || 'var(--text)';
+    v.textContent = val;
+    var s = document.createElement('div'); s.className = 'rc-sub'; s.textContent = sub;
+    c.appendChild(l); c.appendChild(v); c.appendChild(s);
+    return c;
+  }
+
+  cards.appendChild(makeCard('ice',    'Monthly Total',     fmtP(total),      tier.name));
+  cards.appendChild(makeCard('blue',   'Annual Estimate',   fmtP(annual),     'x12 months'));
+  cards.appendChild(makeCard('green',  'vs S3 Standard',    fmtP(Math.max(0, savings)) + ' saved', 'storage cost delta'));
+  cards.appendChild(makeCard('orange', 'Storage Cost',      fmtP(storageCost), storageGB + ' GB stored'));
+
+  // Breakdown
+  var bt = document.getElementById('breakdownTable');
+  bt.innerHTML = '';
+  var bHead = document.createElement('div'); bHead.className = 'bt-head'; bHead.textContent = 'Cost Breakdown';
+  bt.appendChild(bHead);
+
+  function bRow(key, val, bold) {
+    var row = document.createElement('div'); row.className = 'bt-row';
+    var k = document.createElement('span'); k.className = 'bt-key'; k.textContent = key;
+    var v = document.createElement('span'); v.className = bold ? 'bt-total' : 'bt-val'; v.textContent = val;
+    row.appendChild(k); row.appendChild(v); bt.appendChild(row);
+  }
+
+  bRow('Storage (' + storageGB + ' GB × $' + p.storage + '/GB)', fmtP(storageCost));
+  if (retCost > 0 || retrievalGB > 0) bRow('Retrieval (' + retrievalGB + ' GB, ' + freeRetrievalGB + ' GB free)', fmtP(retCost));
+  if (earlyDelCost > 0) bRow('Early deletion penalty (' + earlyDelGB + ' GB, ' + daysStored + ' days stored)', fmtP(earlyDelCost));
+  if (transferCost > 0) bRow('Data transfer out (' + billableTransfer + ' GB charged)', fmtP(transferCost));
+  bRow('Monthly total', fmtP(total), true);
+  bRow('Annual total', fmtP(annual));
+  bRow('S3 Standard equivalent', fmtP(s3Cost));
+
+  // Tier comparison
+  var tc = document.getElementById('tierCmpTable');
+  tc.innerHTML = '';
+  var hRow = document.createElement('div'); hRow.className = 'tc-row tc-head';
+  ['Tier', 'Storage/GB/mo', 'Min. Period', 'Retrieval', 'Monthly Est.'].forEach(function(h) {
+    var c = document.createElement('div'); c.className = 'tc-cell'; c.textContent = h; hRow.appendChild(c);
+  });
+  tc.appendChild(hRow);
+
+  TIERS.forEach(function(t) {
+    var tp = t.prices[region] || t.prices.use1;
+    var est = storageGB * tp.storage;
+    var row = document.createElement('div');
+    row.className = 'tc-row' + (t.id === activeTier ? ' tc-active' : '');
+    var vals = [
+      t.name,
+      '$' + tp.storage + '/GB',
+      t.minDays + ' days',
+      t.id === 'instant' ? 'ms' : t.id === 'flexible' ? '1min–12hr' : '12–48hr',
+      fmtP(est)
+    ];
+    vals.forEach(function(v) {
+      var c = document.createElement('div'); c.className = 'tc-cell'; c.textContent = v; row.appendChild(c);
+    });
+    tc.appendChild(row);
+  });
+
+  // S3 Standard row
+  var s3row = document.createElement('div'); s3row.className = 'tc-row';
+  ['S3 Standard', '$' + (S3_STANDARD[region] || 0.023) + '/GB', 'None', 'Instant', fmtP(s3Cost)].forEach(function(v) {
+    var c = document.createElement('div'); c.className = 'tc-cell'; c.style.color = 'var(--orange)'; c.textContent = v; s3row.appendChild(c);
+  });
+  tc.appendChild(s3row);
+
+  // Recommendation
+  var rec = document.getElementById('recCard');
+  rec.style.display = 'block';
+  rec.innerHTML = '';
+  var recText;
+  if (storageGB > 0 && savings > 5) {
+    if (tier.id === 'deep') {
+      recText = 'Deep Archive is the right choice for this workload — you save ' + fmtP(savings) + '/month vs S3 Standard. Ensure your access pattern is truly once or twice per year — any more frequent retrieval may offset the savings with retrieval costs.';
+    } else if (tier.id === 'flexible') {
+      recText = 'Glacier Flexible Retrieval saves ' + fmtP(savings) + '/month vs S3 Standard. If you can tolerate 12+ hour retrieval delays, consider Deep Archive for an additional ~75% storage cost reduction.';
+    } else {
+      recText = 'Glacier Instant Retrieval saves ' + fmtP(savings) + '/month vs S3 Standard with millisecond access. If retrieval time is not critical, Glacier Flexible or Deep Archive would save more.';
+    }
+  } else {
+    recText = 'For this storage size, the Glacier cost savings may be modest. Glacier is most cost-effective at 100GB+ with infrequent retrieval patterns. Ensure the 90/180-day minimum storage commitment fits your data lifecycle.';
+  }
+  var strong = document.createElement('strong'); strong.textContent = 'Recommendation: '; strong.style.color = 'var(--green)';
+  rec.appendChild(strong);
+  rec.appendChild(document.createTextNode(recText));
+
+  document.getElementById('resultsWrap').style.display = 'block';
+  document.getElementById('resultsWrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function loadSample() {
+  document.getElementById('storageGB').value = '2000';
+  document.getElementById('retrievalGB').value = '50';
+  document.getElementById('earlyDelGB').value = '100';
+  document.getElementById('daysStored').value = '45';
+  document.getElementById('transferGB').value = '20';
+  document.getElementById('regionSelect').value = 'use1';
+  selectTier('flexible');
+  setTimeout(calcGlacier, 50);
+}
+
+function resetCalc() {
+  ['storageGB','retrievalGB','earlyDelGB','daysStored','transferGB'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('resultsWrap').style.display = 'none';
+}
+
+function toggleFaq(btn) {
+  btn.parentElement.classList.toggle('open');
+}
+
+init();
+</script>
 
 </body>
 </html>
